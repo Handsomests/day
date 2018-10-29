@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--连接数据库-->
+    <properties resource="database.properties"/>
+    <settings>
+        <!--&lt;!&ndash;配置log4j&ndash;&gt;-->
+        <!--<setting name="logImpl" value="LOG4J"/>-->
+        <!--开启驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+    <!--设置entity包下的别名-->
+    <typeAliases>
+        <!--&lt;!&ndash; 单个定义别名 &ndash;&gt;-->
+        <!--<typeAlias type="entity.User" alias="User"/>-->
+        <!-- 批量定义别名（推荐） -->
+        <!-- [name]：指定批量定义别名的类包，别名为类名（首字母大小写都可） -->
+        <package name="entity"/>
+    </typeAliases>
+
+<!--配置环境-->
+    <environments default="dev">
+        <!--环境变量：连接数据库-->
+        <environment id="dev">
+            <!-- 配置JDBC事务控制，由mybatis进行管理 -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- 配置数据源，采用dbcp连接池 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--mapper映射器-->
+    <mappers>
+        <package name="mapper"/>
+    </mappers>
+
+</configuration>
