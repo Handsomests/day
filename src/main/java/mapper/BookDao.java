@@ -11,13 +11,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDao {
+
+
+
+    public int count() {
+        Connection conn = null;
+        PreparedStatement ptmt = null;
+        ResultSet rs = null;
+        int count=0;
+        try {
+            conn = DBUtil.getConnection();
+            String sql = " select count(*) from book";
+            ptmt = conn.prepareStatement(sql);
+            rs = ptmt.executeQuery();
+            while (rs.next()) {
+                count=rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
     /**
      * 查询全部
      *
      * @return
      * @throws SQLException
      */
-    public List<Book> query() {
+    public List<Book> query(int start,int pageSize) {
         List<Book> bookList = new ArrayList<Book>();
         // 获得数据库连接
         Connection conn = null;
@@ -25,10 +57,12 @@ public class BookDao {
         PreparedStatement ptmt = null;
         try {
             conn = DBUtil.getConnection();
-            StringBuilder sb = new StringBuilder();
-            sb.append("select * from book");
+
+            String sql="select * from book limit ?,?";
             // 通过数据库的连接操作数据库，实现增删改查
-            ptmt = conn.prepareStatement(sb.toString());
+            ptmt = conn.prepareStatement(sql.toString());
+            ptmt.setInt(1, start);
+            ptmt.setInt(2, pageSize);
             rs = ptmt.executeQuery();
             Book book = null;
             while (rs.next()) {

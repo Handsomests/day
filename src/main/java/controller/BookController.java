@@ -2,6 +2,7 @@ package controller;
 
 import entity.Book;
 import mapper.BookDao;
+import util.Page;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,8 +32,14 @@ public class BookController extends HttpServlet {
             bookDao.deleteBooks(id);
             response.sendRedirect("/book");
         }
+        //列表
         else {
-            List<Book> bookList =bookDao.query();
+            System.out.println("------------"+request.getParameter("start"));
+            int start=request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            int pageSize=7;//Integer.parseInt(request.getParameter("start"));
+            Page page=new Page(start,pageSize,bookDao.count());
+            List<Book> bookList =bookDao.query(page.getStart(),page.getPageSize());
+            request.setAttribute("page",page);
             request.setAttribute("bookList", bookList);
             request.getRequestDispatcher("/view/book/bookList.jsp").forward(request,response);
         }
@@ -40,12 +47,7 @@ public class BookController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Book book=new Book();
-        int id=0;
-        if(request.getParameter("id")!=""){
-            id=Integer.parseInt(request.getParameter("id"));
-
-            System.out.println(id+"aaaaaaaaaaaaa");
-        }
+        int id=request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
         book.setName(request.getParameter("name"));
         book.setPrice(request.getParameter("price"));
         book.setNumber(Integer.parseInt(request.getParameter("number")));
