@@ -36,7 +36,7 @@ public class BookController extends HttpServlet {
         else {
             System.out.println("------------"+request.getParameter("start"));
             int start=request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            int pageSize=7;//Integer.parseInt(request.getParameter("start"));
+            int pageSize=6;//Integer.parseInt(request.getParameter("start"));
             Page page=new Page(start,pageSize,bookDao.count());
             List<Book> bookList =bookDao.query(page.getStart(),page.getPageSize());
             request.setAttribute("page",page);

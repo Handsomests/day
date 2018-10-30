@@ -86,17 +86,16 @@
                         <i class="fa fa-user  fa-fw"></i>
                         <input type="text" placeholder="用户名" required class="form-control" id="registerUserName" name="userName"  maxlength="20">
                     </div>
-                    <dic class="form-group">
+                    <div class="form-group">
                         <div id="showRegisterResult" style="vertical-align: middle;">
                         </div>
-                    </dic>
+                    </div>
                     <div class="form-group">
                         <i class="fa fa-lock  fa-fw"></i>
                         <input type="password" required placeholder="6-16数字和字母组成" class="form-control" id="registerUserPass" name="userPass" minlength="6" maxlength="20">
                     </div>
                     <div class="form-group">
                         <div id="showPass">
-
                         </div>
                     </div>
                     <div class="form-group">
@@ -105,7 +104,6 @@
                     </div>
                     <div class="form-group">
                         <div id="showPassEnter">
-
                         </div>
                     </div>
                     <div class="form-group">

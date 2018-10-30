@@ -16,31 +16,7 @@ public class Page implements Serializable {
         this.total=total;
         setTotalPage();
     }
-    //判断是否有上一页
-    public Boolean isHasPreviouse(){
-        if (start==0)
-            return false;
-        return true;
-    }
-    //判断是否有下一页
-    public Boolean isHasNext(){
-          if(getLast()==0)
-              return false;
-          return true;
-    }
-    //获取尾页
-    public int getLast(){
-        last= total % pageSize == 0 ? total-pageSize : total - total % pageSize;
-
-        last = last < 0 ? 0 : last;
-
-        return last;
-    }
     //总页数
-    public int getTotalPage(){
-        totalPage= total % pageSize == 0 ? total/pageSize : total/pageSize+1;
-        return totalPage;
-    }
     public void setTotalPage(){
         totalPage= total % pageSize == 0 ? total/pageSize : total/pageSize + 1;
         System.out.println(totalPage+"--------+++++++++++"+total);
