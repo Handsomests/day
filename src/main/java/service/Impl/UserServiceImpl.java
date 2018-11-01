@@ -15,14 +15,13 @@ import util.mybatisUtil;
    **/
 public class UserServiceImpl implements UserServiceInter {
      private  static  final Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
+     private static  SqlSession sqlSession = null;
     /* *
        * description  判断用户名是否存在
        * date         2018/10/24 15:24
        **/
     public Boolean userNameIsExist(String userName){
         Boolean flag=false;
-        //创建SqlSession对象
-        SqlSession sqlSession = null;
         User user=null;
         try {
             sqlSession = mybatisUtil.createSqlSession();
@@ -41,7 +40,6 @@ public class UserServiceImpl implements UserServiceInter {
        **/
     public Boolean emailIsExist(String email){
         Boolean flag=false;
-        SqlSession sqlSession = null;
         User user=null;
         try {
             sqlSession = mybatisUtil.createSqlSession();
@@ -61,11 +59,10 @@ public class UserServiceImpl implements UserServiceInter {
     public Boolean login(String userName,String userPass){
         logger.info(userName+userPass);
         Boolean flag=false;   //密码错误
-        SqlSession session = null;
         User user=null;
         try {
-            session = mybatisUtil.createSqlSession();
-            UserMapper userMapper=session.getMapper(UserMapper.class);
+            sqlSession = mybatisUtil.createSqlSession();
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
             //如果用户名存在
             if(userNameIsExist(userName)){
                user=userMapper.getUserByUserNameAndUserPass(userName,userPass);
@@ -75,26 +72,24 @@ public class UserServiceImpl implements UserServiceInter {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            session.close();
+            sqlSession.close();
         }
         return flag;
     }
     public int register(User user){
-        SqlSession session=null;
         int count=0;
         try {
-            session=mybatisUtil.createSqlSession();
-            count=session.getMapper(UserMapper.class).insertUser(user);
-            session.commit();
+            sqlSession=mybatisUtil.createSqlSession();
+            count=sqlSession.getMapper(UserMapper.class).insertUser(user);
+            sqlSession.commit();
             logger.info(user.toString());
         }
         catch (Exception e){
             e.printStackTrace();
         }
         finally {
-            session.close();
+            sqlSession.close();
         }
         return count;
     }
-
 }

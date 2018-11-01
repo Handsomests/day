@@ -17,7 +17,7 @@
         input[type="text"],input[type="password"]{padding-left:36px;width: 300px}
         .checkbox{padding-left:21px;}
         .m-auto{
-            margin-top: 150px !important;
+            margin-top: 25% !important;
         }
         .modal-content{
             width: 120%;

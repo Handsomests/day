@@ -31,6 +31,13 @@ public class BookController extends HttpServlet {
             bookDao.deleteBooks(id);
             response.sendRedirect("/book");
         }
+        //搜索
+        else if("search".equals(action)){
+          String keywords=request.getParameter("keywords");
+          List<Book> list=bookDao.getBookByKey(keywords);
+          request.setAttribute("bookList",list);
+          request.getRequestDispatcher("/view/book/bookList.jsp").forward(request,response);
+        }
         //列表
         else {
             int start=request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
@@ -39,7 +46,7 @@ public class BookController extends HttpServlet {
             List<Book> bookList =bookDao.query(page.getStart(),page.getPageSize());
             request.setAttribute("page",page);
             request.setAttribute("bookList", bookList);
-            request.getRequestDispatcher("/view/book/bookList.jsp").forward(request,response);
+            request.getRequestDispatcher("view/book/bookList.jsp").forward(request,response);
         }
     }
     @Override
