@@ -15,11 +15,14 @@ public class Page implements Serializable {
         this.pageSize=pageSize;
         this.total=total;
         setTotalPage();
+
     }
     //总页数
     public void setTotalPage(){
-        totalPage= total % pageSize == 0 ? total/pageSize : total/pageSize + 1;
-        System.out.println(totalPage+"--------+++++++++++"+total);
+        this.totalPage= total % pageSize == 0 ? total/pageSize : total/pageSize + 1;
+    }
+    public int getTotalPage(){
+        return totalPage;
     }
     public int getStart() {
         return start;

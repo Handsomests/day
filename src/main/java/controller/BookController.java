@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
 @WebServlet("/book")
 public class BookController extends HttpServlet {
     private  static  BookDao bookDao=new BookDao();
@@ -34,7 +33,6 @@ public class BookController extends HttpServlet {
         }
         //列表
         else {
-            System.out.println("------------"+request.getParameter("start"));
             int start=request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             int pageSize=6;//Integer.parseInt(request.getParameter("start"));
             Page page=new Page(start,pageSize,bookDao.count());

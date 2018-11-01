@@ -1,11 +1,11 @@
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <style>
-    th, td,tr {
+    th, td, tr {
         text-align: center;
     }
 
-    .table tbody tr td{
+    .table tbody tr td {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -57,23 +57,22 @@
             </table>
             <div class="row">
                 <div class="m-auto">
-                    <ul class="pagination" >
+                    <ul class="pagination">
                         <li <c:if test="${page.start <= 0}"> class="page-item disabled" </c:if>>
-                                <a href="/book?start=${page.start-page.pageSize}" class="page-item page-link">上一页</a>
+                            <a href="/book?start=${page.start-page.pageSize}" class="page-item page-link">上一页</a>
+                        </li>
+                        <c:forEach begin="0" end="${page.totalPage-1}" var="pageIndex">
+                            <li class="page-item">
+                                <a href="/book?start=${pageIndex*page.pageSize}" class="page-link">${pageIndex+1}</a>
                             </li>
-                            <c:forEach begin="0" end="${page.totalPage-1}"  var="index">
-                                <li class="page-item">
-                                    <a href="/book?start=${index*page.pageSize}" class="page-link">${index+1}</a>
-                                </li>
-                            </c:forEach>
-
-
-                            <li <c:if test="${page.total-page.start<page.pageSize}"> class="page-item disabled" </c:if>>
-                                <a href="/book?start=${page.start+page.pageSize}"  class="page-link">下一页</a>
-                            </li>
+                        </c:forEach>
+                        <li <c:if test="${page.total-page.start<page.pageSize}"> class="page-item disabled" </c:if>>
+                            <a href="/book?start=${page.start+page.pageSize}" class="page-link">下一页</a>
+                        </li>
                         <li class="page-item disabled">
-                            <c:set var="pageNum" value="${(page.start/page.pageSize)+1}" />
-                            <span class="page-link">第 <fmt:formatNumber type="number" value="${pageNum}" pattern="#"/> 页  </span>
+                            <c:set var="pageNum" value="${(page.start/page.pageSize)+1}"/>
+                            <span class="page-link">第 <fmt:formatNumber type="number" value="${pageNum}"
+                                                                        pattern="#"/> 页  </span>
                         </li>
                         <li class="page-item disabled" id="next">
                             <span class="page-link">共 ${page.totalPage} 页</span>
@@ -81,18 +80,9 @@
                     </ul>
                 </div>
             </div>
-
         </div>
-        <!-- /.container-fluid -->
-        <%--<footer class="sticky-footer">--%>
-            <%--<div class="container my-auto">--%>
-                <%--<div class="copyright text-center my-auto">--%>
-                    <%--<span>Copyright © Your Website 2018</span>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</footer>--%>
-
     </div>
+</div>
 </div>
 <script>
 
