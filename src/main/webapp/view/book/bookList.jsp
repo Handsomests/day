@@ -24,7 +24,7 @@
                     <ul id="showSearch" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"></ul>
                    <div class="input-group-append">
                        <%--<a href="/book?action=search&keywords">--%>
-                           <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                           <button class="btn btn-primary" type="button" id="searchButton"><i class="fa fa-search"></i></button>
                            <%--</a>--%>
                    </div>
                     <a href="/view/book/addOrEdit.jsp"><button class="btn btn-primary  offset-md-5">新增</button></a>
@@ -111,13 +111,9 @@
                         alert("向服务器请求信息异常，请检查网络是否正常！" + XMLHttpRequest.status + ":" + XMLHttpRequest.readyState + ":" + textStatus);
                     },
                     success: function (result) {
-                        var queryStr = Object.getOwnPropertyNames(result).map(key => {
-                            return result[key];
-                        }).join(",");
-                        var mem = queryStr.split(",");
-                        for (var i = 0; i < mem.length - 1; i++) {
+                        for (var i = 0; i < result.length - 1; i++) {
                             //循环添加li节点
-                            $("#showSearch").append("<li role='presentation' class='dropdown-item' id='li-text'>" + mem[i] + "</li>");
+                            $("#showSearch").append("<li role='presentation' class='dropdown-item' id='li-text'>" + result[i] + "</li>");
                             //显示 ul 节点
                             $("#showSearch").show();
                             $("#li-text").mousedown(function () {
@@ -125,18 +121,17 @@
                             });
                         }
                     }
-                })
+                }),
                 $('#keywords').keydown(function(){
                     $('#showSearch').html("");
-                })
+                }),
                 $('#keywords').blur(function(){
                     $('#showSearch').hide();
                 })
             }
-
     });})
 
-    $("#keywords").blur(function () {
+    $("#searchButton").click(function () {
         var keywords = $("#keywords").val();
         window.location.href="/book?action=search&keywords="+keywords;
     });

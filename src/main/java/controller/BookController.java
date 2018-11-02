@@ -33,12 +33,8 @@ public class BookController extends HttpServlet {
         }
         //搜索
         else if("search".equals(action)){
-            int start=request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            int pageSize=6;//Integer.parseInt(request.getParameter("start"));
-            List<Book> list=bookDao.getBookByKey(request.getParameter("keywords"),start,pageSize);
-            Page page=new Page(start,pageSize,list.size());
+            List<Book> list=bookDao.getBookByKey(request.getParameter("keywords"));
             request.setAttribute("search","search");
-            request.setAttribute("page",page);
             request.setAttribute("bookList",list);
             request.getRequestDispatcher("/view/book/bookList.jsp").forward(request,response);
         }

@@ -246,18 +246,16 @@ public class BookDao {
      * description  根据关键字查询
      * param [key]
      **/
-    public List<Book> getBookByKey(String key,int start, int pageSize) {
+    public List<Book> getBookByKey(String key) {
         List<Book> bookList = new ArrayList<Book>();
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
         try {
             conn = DBUtil.getConnection();
-            String sql = "select * from book where name like ? limit ? , ? ";
+            String sql = "select * from book where name like ? ";
             ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, "%" + key + "%");
-            ptmt.setInt(2,start);
-            ptmt.setInt(3,pageSize);
             ptmt.execute();
             rs = ptmt.executeQuery();
             Book book = null;
