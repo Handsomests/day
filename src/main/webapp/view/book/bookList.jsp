@@ -19,11 +19,13 @@
             <h1>
                 书籍管理
             </h1>
-                <div class="input-group col-md-3 offset-md-9">
-                   <input type="text" class="form-control" placeholder="Search for..." name="key" id="key">
-                    <ul id="search" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"></ul>
+                <div class="input-group col-md-4 offset-md-8">
+                   <input type="text" class="form-control" placeholder="Search for..." name="keywords" id="keywords">
+                    <ul id="showSearch" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"></ul>
                    <div class="input-group-append">
-                     <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                       <%--<a href="/book?action=search&keywords">--%>
+                           <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                           <%--</a>--%>
                    </div>
                     <a href="/view/book/addOrEdit.jsp"><button class="btn btn-primary  offset-md-5">新增</button></a>
             </div>
@@ -61,7 +63,7 @@
                 </tbody>
                 <br/>
             </table>
-            <div class="row">
+            <div  class="row"<c:if test="${search eq 'search'}"> hidden</c:if>>
                 <div class="m-auto">
                     <ul class="pagination">
                         <li <c:if test="${page.start <= 0}"> class="page-item disabled" </c:if>>
@@ -92,31 +94,51 @@
 </div>
 <script>
     $(document).ready(function(){
-        $("#key").keyup(function(){
-            alert("====");
-            var key = $("#key").val();
+        $("#keywords").keyup(function(){
+            var keywords = $("#keywords").val();
+            var  url="/check?type=search&keywords="+keywords;
             var data={
-                key:key,
-                type:"search"
+                keywords:keywords
             }
-            $.ajax({
-                type:"POST",   //http请求方式
-                cache:false,
-                url:"/check",       //发送给服务器的url
-                data:JSON.stringify(data), //发送给服务器的参数
-                dataType:"json",  //告诉JQUERY返回的数据格式(注意此处数据格式一定要与提交的controller返回的数据格式一致,不然不会调用回调函数complete)
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("向服务器请求信息异常，请检查网络是否正常！" + XMLHttpRequest.status + ":" + XMLHttpRequest.readyState + ":" + textStatus);
-                },
-                success : function(result) {
-                }
-        });
-        $('#search-text').keydown(function(){
-            $('#search-result').empty();
-        })
-        $('#search-text').blur(function(){
-            $('#search-result').empty();
-        })
+            if(keywords!="") {
+                $.ajax({
+                    type: "POST",   //http请求方式
+                    cache: false,
+                    url: url,       //发送给服务器的url
+                    data: JSON.stringify(data), //发送给服务器的参数
+                    dataType: "json",  //告诉JQUERY返回的数据格式(注意此处数据格式一定要与提交的controller返回的数据格式一致,不然不会调用回调函数complete)
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("向服务器请求信息异常，请检查网络是否正常！" + XMLHttpRequest.status + ":" + XMLHttpRequest.readyState + ":" + textStatus);
+                    },
+                    success: function (result) {
+                        var queryStr = Object.getOwnPropertyNames(result).map(key => {
+                            return result[key];
+                        }).join(",");
+                        var mem = queryStr.split(",");
+                        for (var i = 0; i < mem.length - 1; i++) {
+                            //循环添加li节点
+                            $("#showSearch").append("<li role='presentation' class='dropdown-item' id='li-text'>" + mem[i] + "</li>");
+                            //显示 ul 节点
+                            $("#showSearch").show();
+                            $("#li-text").mousedown(function () {
+                                $("#keywords").val($(this).text());
+                            });
+                        }
+                    }
+                })
+                $('#keywords').keydown(function(){
+                    $('#showSearch').html("");
+                })
+                $('#keywords').blur(function(){
+                    $('#showSearch').hide();
+                })
+            }
+
+    });})
+
+    $("#keywords").blur(function () {
+        var keywords = $("#keywords").val();
+        window.location.href="/book?action=search&keywords="+keywords;
     });
 </script>
 <%@include file="../../common_view/foot.jsp" %>

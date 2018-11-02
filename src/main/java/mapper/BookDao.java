@@ -1,6 +1,8 @@
 package mapper;
 
 import entity.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import util.DBUtil;
 
 import java.sql.Connection;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDao {
+    private static final Logger log= LoggerFactory.getLogger(BookDao.class);
     public int count() {
         Connection conn = null;
         PreparedStatement ptmt = null;
@@ -206,20 +209,21 @@ public class BookDao {
      * description  模糊查找返回提示
      * param
      **/
-    public List<String> prompt(String keywords) {
+    public List prompt(String keywords) {
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
-        List<String> list = null;
+        List list = new ArrayList();
         try {
             conn = DBUtil.getConnection();
-            String sql = "select name from book where name like ? ";
+            String sql = "select name from book where name like ?";
             ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, "%" + keywords + "%");
             rs = ptmt.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString(1));
+                log.info("bookDao=========="+rs.getString(1));
                 list.add(rs.getString(1));
+                log.info(list.get(0)+"--"+list.get(0));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -242,16 +246,18 @@ public class BookDao {
      * description  根据关键字查询
      * param [key]
      **/
-    public List<Book> getBookByKey(String key) {
+    public List<Book> getBookByKey(String key,int start, int pageSize) {
         List<Book> bookList = new ArrayList<Book>();
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
         try {
             conn = DBUtil.getConnection();
-            String sql = "select * from book where name like ? ";
+            String sql = "select * from book where name like ? limit ? , ? ";
             ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, "%" + key + "%");
+            ptmt.setInt(2,start);
+            ptmt.setInt(3,pageSize);
             ptmt.execute();
             rs = ptmt.executeQuery();
             Book book = null;

@@ -1,7 +1,7 @@
 package controller;
 
+import com.google.gson.Gson;
 import mapper.BookDao;
-import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.Impl.UserServiceImpl;
@@ -49,10 +49,11 @@ public class CheckController extends HttpServlet {
        //ajax搜索提示功能
        else  if ("search".equals(type)){
            String keywords=request.getParameter("keywords");
-           List<String> list=bookDao.prompt(keywords);
-           JSONArray jsonArray=new JSONArray();
-           System.out.println(jsonArray.put(list).toString());
-           response.getWriter().print(jsonArray.put(list).toString());
+           logger.info(keywords+"--------------");
+           List list=bookDao.prompt(keywords);
+           Gson gson=new Gson();
+           System.out.println(gson.toJson(list));
+           response.getWriter().print(gson.toJson(list));
        }
     }
 }

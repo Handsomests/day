@@ -45,7 +45,7 @@
         <%--</div>--%>
     <%--</form>--%>
     <!-- Navbar -->
-    <ul class="navbar-nav col-md-2 offset-md-10">
+    <ul class="navbar-nav col-md-2 offset-md-9 offset-ld-10">
         <li class="nav-item dropdown no-arrow nav-link">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
